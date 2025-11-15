@@ -1,0 +1,192 @@
+/**
+ * RAID MOTOR Search Plugin Styles
+ *
+ * @package RaidMotorSearch
+ */
+
+/* Wrapper Styles */
+.raid-motor-wrapper {
+	position: relative;
+	width: 100%;
+	max-width: 100%;
+	margin: 20px 0;
+	border-radius: 8px;
+	overflow: hidden;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	background: #f8fafc;
+}
+
+/* Responsive Wrapper */
+.raid-motor-wrapper.raid-motor-responsive {
+	position: relative;
+	padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+	height: 0;
+	overflow: hidden;
+}
+
+.raid-motor-wrapper.raid-motor-responsive .raid-motor-iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100% !important;
+}
+
+/* iFrame Styles */
+.raid-motor-iframe {
+	width: 100%;
+	border: none;
+	display: block;
+	background: #fff;
+}
+
+/* Loading State */
+.raid-motor-wrapper::before {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 40px;
+	height: 40px;
+	border: 4px solid #f3f4f6;
+	border-top-color: #6366f1;
+	border-radius: 50%;
+	animation: raid-motor-spin 1s linear infinite;
+	z-index: 1;
+	pointer-events: none;
+}
+
+.raid-motor-wrapper.raid-motor-loaded::before {
+	display: none;
+}
+
+@keyframes raid-motor-spin {
+	to {
+		transform: translate(-50%, -50%) rotate(360deg);
+	}
+}
+
+/* Error State */
+.raid-motor-error {
+	padding: 20px;
+	background: #fee;
+	border: 1px solid #fcc;
+	border-radius: 4px;
+	color: #c00;
+	text-align: center;
+	margin: 20px 0;
+}
+
+/* No Script Fallback */
+.raid-motor-noscript {
+	padding: 40px 20px;
+	text-align: center;
+	background: #f9fafb;
+	border: 2px dashed #d1d5db;
+	border-radius: 8px;
+}
+
+.raid-motor-noscript p {
+	margin: 10px 0;
+	color: #6b7280;
+}
+
+.raid-motor-noscript a {
+	display: inline-block;
+	padding: 10px 20px;
+	background: #6366f1;
+	color: #fff;
+	text-decoration: none;
+	border-radius: 6px;
+	transition: background 0.3s ease;
+}
+
+.raid-motor-noscript a:hover {
+	background: #4f46e5;
+}
+
+/* Mobile Responsive */
+@media screen and (max-width: 768px) {
+	.raid-motor-wrapper {
+		margin: 15px 0;
+		border-radius: 6px;
+	}
+
+	.raid-motor-wrapper.raid-motor-responsive {
+		padding-bottom: 75%; /* Taller on mobile */
+	}
+
+	.raid-motor-iframe {
+		min-height: 600px;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.raid-motor-wrapper {
+		margin: 10px 0;
+	}
+
+	.raid-motor-iframe {
+		min-height: 500px;
+	}
+}
+
+/* Admin Preview */
+.raid-motor-admin-preview {
+	padding: 20px;
+	background: #f0f0f1;
+	border: 2px dashed #c3c4c7;
+	text-align: center;
+	color: #646970;
+	margin: 20px 0;
+}
+
+.raid-motor-admin-preview strong {
+	display: block;
+	font-size: 16px;
+	margin-bottom: 10px;
+	color: #1d2327;
+}
+
+/* Accessibility */
+.raid-motor-wrapper:focus-within {
+	outline: 2px solid #6366f1;
+	outline-offset: 2px;
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+	.raid-motor-wrapper {
+		background: #1f2937;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+	}
+
+	.raid-motor-noscript {
+		background: #374151;
+		border-color: #4b5563;
+	}
+
+	.raid-motor-noscript p {
+		color: #d1d5db;
+	}
+}
+
+/* Print Styles */
+@media print {
+	.raid-motor-wrapper {
+		page-break-inside: avoid;
+	}
+
+	.raid-motor-iframe {
+		display: none;
+	}
+
+	.raid-motor-wrapper::after {
+		content: 'RAID MOTOR Search Engine - Visit: ' attr(data-url);
+		display: block;
+		padding: 20px;
+		border: 1px solid #000;
+		text-align: center;
+	}
+}
