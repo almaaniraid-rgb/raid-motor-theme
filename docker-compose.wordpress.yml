@@ -1,0 +1,88 @@
+# Docker Compose per WordPress con tema RAID MOTOR
+# Avvia un ambiente WordPress locale completo con database e WP-CLI
+version: '3.8'
+
+services:
+  # Database MySQL per WordPress
+  db:
+    image: mysql:5.7
+    container_name: raid-motor-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: wordpress_root
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - wordpress-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pwordpress_root"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # WordPress con Apache
+  wordpress:
+    depends_on:
+      db:
+        condition: service_healthy
+    image: wordpress:6.4-php8.1-apache
+    container_name: raid-motor-wordpress
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DEBUG: 1
+    volumes:
+      # Monta il tema nella cartella dei temi di WordPress
+      - ./wordpress-theme/raid-motor-theme:/var/www/html/wp-content/themes/raid-motor-theme
+      # Volume per persistenza dei dati WordPress
+      - wordpress_data:/var/www/html
+    networks:
+      - wordpress-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # WP-CLI per operazioni da linea di comando
+  wpcli:
+    depends_on:
+      wordpress:
+        condition: service_healthy
+    image: wordpress:cli-2.9-php8.1
+    container_name: raid-motor-wpcli
+    user: "33:33"  # www-data user
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+    volumes:
+      # Stessi volumi di WordPress per accedere ai file
+      - ./wordpress-theme/raid-motor-theme:/var/www/html/wp-content/themes/raid-motor-theme
+      - wordpress_data:/var/www/html
+      # Script di installazione
+      - ./install-theme-wpcli.sh:/install-theme-wpcli.sh
+    networks:
+      - wordpress-network
+    # Mantieni il container in esecuzione
+    entrypoint: sh -c "tail -f /dev/null"
+
+volumes:
+  db_data:
+    driver: local
+  wordpress_data:
+    driver: local
+
+networks:
+  wordpress-network:
+    driver: bridge
