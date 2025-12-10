@@ -11,19 +11,90 @@ function raid_motor_setup() {
     add_theme_support('title-tag');
     add_theme_support('post-thumbnails');
     add_theme_support('html5', array('search-form', 'comment-form', 'comment-list', 'gallery', 'caption'));
-    add_theme_support('custom-logo');
+    
+    // Supporto per Custom Logo con dimensioni consigliate
+    add_theme_support('custom-logo', array(
+        'height'      => 120,
+        'width'       => 400,
+        'flex-height' => true,
+        'flex-width'  => true,
+    ));
 
     register_nav_menus(array(
-        'primary' => __('Primary Menu', 'raid-motor'),
+        'primary' => __('Menu Principale', 'raid-motor'),
     ));
 }
 add_action('after_setup_theme', 'raid_motor_setup');
 
-function raid_motor_scripts() {
-    wp_enqueue_style('raid-motor-style', get_stylesheet_uri(), array(), '1.0.0');
-    wp_enqueue_script('raid-motor-particles', get_template_directory_uri() . '/js/particles.js', array(), '1.0.0', true);
-    wp_enqueue_script('raid-motor-main', get_template_directory_uri() . '/js/main.js', array('jquery'), '1.0.0', true);
+/**
+ * Registrazione Custom Post Type 'service' (Servizi)
+ * Permette di creare e gestire i servizi offerti
+ */
+function raid_motor_register_service_cpt() {
+    $labels = array(
+        'name'                  => 'Servizi',
+        'singular_name'         => 'Servizio',
+        'menu_name'             => 'Servizi',
+        'name_admin_bar'        => 'Servizio',
+        'add_new'               => 'Aggiungi Nuovo',
+        'add_new_item'          => 'Aggiungi Nuovo Servizio',
+        'new_item'              => 'Nuovo Servizio',
+        'edit_item'             => 'Modifica Servizio',
+        'view_item'             => 'Visualizza Servizio',
+        'all_items'             => 'Tutti i Servizi',
+        'search_items'          => 'Cerca Servizi',
+        'parent_item_colon'     => 'Servizio Genitore:',
+        'not_found'             => 'Nessun servizio trovato.',
+        'not_found_in_trash'    => 'Nessun servizio trovato nel cestino.',
+        'featured_image'        => 'Immagine del Servizio',
+        'set_featured_image'    => 'Imposta immagine del servizio',
+        'remove_featured_image' => 'Rimuovi immagine del servizio',
+        'use_featured_image'    => 'Usa come immagine del servizio',
+        'archives'              => 'Archivio Servizi',
+        'insert_into_item'      => 'Inserisci nel servizio',
+        'uploaded_to_this_item' => 'Caricato in questo servizio',
+        'filter_items_list'     => 'Filtra lista servizi',
+        'items_list_navigation' => 'Navigazione lista servizi',
+        'items_list'            => 'Lista servizi',
+    );
 
+    $args = array(
+        'labels'             => $labels,
+        'public'             => true,
+        'publicly_queryable' => true,
+        'show_ui'            => true,
+        'show_in_menu'       => true,
+        'show_in_rest'       => true,
+        'query_var'          => true,
+        'rewrite'            => array('slug' => 'servizi'),
+        'capability_type'    => 'post',
+        'has_archive'        => true,
+        'hierarchical'       => false,
+        'menu_position'      => 5,
+        'menu_icon'          => 'dashicons-admin-tools',
+        'supports'           => array('title', 'editor', 'thumbnail', 'excerpt'),
+    );
+
+    register_post_type('service', $args);
+}
+add_action('init', 'raid_motor_register_service_cpt');
+
+function raid_motor_scripts() {
+    // Cache-busting usando filemtime per il CSS principale
+    $style_version = filemtime(get_template_directory() . '/style.css');
+    wp_enqueue_style('raid-motor-style', get_stylesheet_uri(), array(), $style_version);
+    
+    // Script per le particelle animate
+    $particles_file = get_template_directory() . '/js/particles.js';
+    $particles_version = file_exists($particles_file) ? filemtime($particles_file) : '1.0.0';
+    wp_enqueue_script('raid-motor-particles', get_template_directory_uri() . '/js/particles.js', array(), $particles_version, true);
+    
+    // Script principale con dipendenza jQuery
+    $main_file = get_template_directory() . '/js/main.js';
+    $main_version = file_exists($main_file) ? filemtime($main_file) : '1.0.0';
+    wp_enqueue_script('raid-motor-main', get_template_directory_uri() . '/js/main.js', array('jquery'), $main_version, true);
+
+    // Localizzazione delle variabili JavaScript per AJAX
     wp_localize_script('raid-motor-main', 'raidMotor', array(
         'ajaxurl' => admin_url('admin-ajax.php'),
         'nonce' => wp_create_nonce('raid_motor_nonce'),
