@@ -31,11 +31,15 @@ The design is inspired by Perplexity.ai with RAID MOTOR's unique branding:
 
 ## 🚀 Quick Start
 
-### Prerequisites
+### React Application
+
+For the React web application:
+
+#### Prerequisites
 
 - Node.js 18+ and npm
 
-### Installation
+#### Installation
 
 1. Clone the repository
 2. Install dependencies:
@@ -55,6 +59,31 @@ npm run dev
 ```bash
 npm run build
 ```
+
+### WordPress Theme Installation
+
+To install the RAID MOTOR theme on your WordPress site:
+
+#### 📘 Per WordPress Locale (Italiano)
+
+Se hai WordPress su localhost (es. http://localhost:8080):
+
+🚀 **[Guida Rapida Localhost](GUIDA_RAPIDA_LOCALHOST.md)** - Installazione in 5 minuti
+
+📚 **[Guida Completa Localhost](INSTALLAZIONE_LOCALHOST.md)** - Istruzioni dettagliate e risoluzione problemi
+
+#### For WordPress Sites (English)
+
+📘 **[WordPress Theme Installation Guide](wordpress-theme/raid-motor-theme/README.md)** - Complete installation instructions
+
+📦 **Theme Package:** `wordpress-theme/raid-motor-theme.zip`
+
+**Quick Steps:**
+1. Go to your WordPress admin panel
+2. Navigate to Appearance → Themes → Add New → Upload Theme
+3. Select `wordpress-theme/raid-motor-theme.zip`
+4. Click "Install Now" then "Activate"
+5. Configure menu at Appearance → Menus
 
 ## 📁 Project Structure
 
