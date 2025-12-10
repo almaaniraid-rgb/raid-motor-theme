@@ -55,7 +55,7 @@ get_header();
                     <?php 
                     $prev_post = get_previous_post();
                     if ($prev_post) {
-                        echo '<a href="' . get_permalink($prev_post->ID) . '">← ' . esc_html($prev_post->post_title) . '</a>';
+                        echo '<a href="' . esc_url(get_permalink($prev_post->ID)) . '">← ' . esc_html($prev_post->post_title) . '</a>';
                     }
                     ?>
                 </div>
@@ -63,7 +63,7 @@ get_header();
                     <?php 
                     $next_post = get_next_post();
                     if ($next_post) {
-                        echo '<a href="' . get_permalink($next_post->ID) . '">' . esc_html($next_post->post_title) . ' →</a>';
+                        echo '<a href="' . esc_url(get_permalink($next_post->ID)) . '">' . esc_html($next_post->post_title) . ' →</a>';
                     }
                     ?>
                 </div>

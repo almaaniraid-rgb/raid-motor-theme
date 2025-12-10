@@ -75,8 +75,9 @@ function raid_motor_register_service_post_type() {
 add_action('init', 'raid_motor_register_service_post_type');
 
 function raid_motor_scripts() {
-    // Usa filemtime per cache-busting
-    $theme_version = filemtime(get_template_directory() . '/style.css');
+    // Usa filemtime per cache-busting con fallback sicuro
+    $stylesheet_path = get_template_directory() . '/style.css';
+    $theme_version = file_exists($stylesheet_path) ? filemtime($stylesheet_path) : '1.0.0';
     
     wp_enqueue_style('raid-motor-style', get_stylesheet_uri(), array(), $theme_version);
     wp_enqueue_script('raid-motor-particles', get_template_directory_uri() . '/js/particles.js', array(), '1.0.0', true);

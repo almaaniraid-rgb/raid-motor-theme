@@ -22,7 +22,9 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Variabili di configurazione
-THEME_DIR="/var/www/html/wp-content/themes/raid-motor-theme"
+# Determina la directory del tema dinamicamente
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+THEME_DIR="${SCRIPT_DIR}"
 LOGO_PATH="${THEME_DIR}/assets/images/logo.png"
 THEME_SLUG="raid-motor-theme"
 
@@ -49,13 +51,18 @@ echo -e "${GREEN}✓${NC} WP-CLI e WordPress rilevati\n"
 # 1. Importa il logo nella Media Library
 echo -e "${YELLOW}[1/6]${NC} Importazione del logo..."
 if [ -f "$LOGO_PATH" ]; then
-    LOGO_ID=$(wp media import "$LOGO_PATH" --porcelain --allow-root 2>/dev/null || echo "")
-    if [ -n "$LOGO_ID" ]; then
+    # Cattura sia stdout che stderr per una migliore gestione degli errori
+    LOGO_IMPORT_OUTPUT=$(wp media import "$LOGO_PATH" --porcelain --allow-root 2>&1)
+    LOGO_IMPORT_EXIT=$?
+    
+    if [ $LOGO_IMPORT_EXIT -eq 0 ] && [ -n "$LOGO_IMPORT_OUTPUT" ]; then
+        LOGO_ID="$LOGO_IMPORT_OUTPUT"
         # Imposta il logo come custom_logo
         wp option update custom_logo "$LOGO_ID" --allow-root
         echo -e "${GREEN}✓${NC} Logo importato (ID: $LOGO_ID) e impostato come custom_logo\n"
     else
-        echo -e "${YELLOW}⚠${NC} Logo già presente o errore durante l'importazione\n"
+        echo -e "${YELLOW}⚠${NC} Logo già presente o errore durante l'importazione"
+        echo -e "${YELLOW}  Dettagli: $LOGO_IMPORT_OUTPUT${NC}\n"
     fi
 else
     echo -e "${YELLOW}⚠${NC} File logo non trovato in $LOGO_PATH\n"
