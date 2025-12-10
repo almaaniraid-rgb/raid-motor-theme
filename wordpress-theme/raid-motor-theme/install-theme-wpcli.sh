@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ##############################################################################
 # Script di installazione e configurazione del tema RAID MOTOR via WP-CLI

@@ -16,7 +16,7 @@ get_header();
         
         <!-- Intestazione dell'archivio -->
         <header class="archive-header">
-            <h1 class="archive-title">I Nostri Servizi</h1>
+            <h1 class="archive-title"><?php _e('I Nostri Servizi', 'raid-motor'); ?></h1>
             <?php if (get_the_archive_description()) : ?>
                 <div class="archive-description">
                     <?php the_archive_description(); ?>
@@ -65,7 +65,7 @@ get_header();
                             <!-- Link per maggiori dettagli -->
                             <div class="service-link">
                                 <a href="<?php the_permalink(); ?>" class="button">
-                                    Scopri di più &rarr;
+                                    <?php _e('Scopri di più', 'raid-motor'); ?> &rarr;
                                 </a>
                             </div>
                             
@@ -82,10 +82,10 @@ get_header();
             <!-- Paginazione -->
             <nav class="pagination">
                 <div class="nav-previous">
-                    <?php previous_posts_link('&larr; Servizi Precedenti'); ?>
+                    <?php previous_posts_link('&larr; ' . __('Servizi Precedenti', 'raid-motor')); ?>
                 </div>
                 <div class="nav-next">
-                    <?php next_posts_link('Servizi Successivi &rarr;'); ?>
+                    <?php next_posts_link(__('Servizi Successivi', 'raid-motor') . ' &rarr;'); ?>
                 </div>
             </nav>
 
@@ -93,7 +93,7 @@ get_header();
             
             <!-- Messaggio quando non ci sono servizi -->
             <div class="no-services">
-                <p>Nessun servizio disponibile al momento.</p>
+                <p><?php _e('Nessun servizio disponibile al momento.', 'raid-motor'); ?></p>
             </div>
             
         <?php endif; ?>

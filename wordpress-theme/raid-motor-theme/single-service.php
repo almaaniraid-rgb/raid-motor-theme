@@ -40,7 +40,7 @@ get_header();
                 <?php if (get_the_excerpt()) : ?>
                     <!-- Riepilogo/estratto del servizio -->
                     <div class="service-excerpt">
-                        <h3>Riepilogo</h3>
+                        <h3><?php _e('Riepilogo', 'raid-motor'); ?></h3>
                         <?php the_excerpt(); ?>
                     </div>
                 <?php endif; ?>
@@ -48,17 +48,17 @@ get_header();
                 <!-- Navigazione tra servizi -->
                 <nav class="service-navigation">
                     <div class="nav-previous">
-                        <?php previous_post_link('%link', '&larr; Servizio Precedente'); ?>
+                        <?php previous_post_link('%link', '&larr; ' . __('Servizio Precedente', 'raid-motor')); ?>
                     </div>
                     <div class="nav-next">
-                        <?php next_post_link('%link', 'Servizio Successivo &rarr;'); ?>
+                        <?php next_post_link('%link', __('Servizio Successivo', 'raid-motor') . ' &rarr;'); ?>
                     </div>
                 </nav>
 
                 <!-- Link per tornare all'archivio -->
                 <div class="back-to-services">
                     <a href="<?php echo esc_url(get_post_type_archive_link('service')); ?>" class="button">
-                        &larr; Torna a tutti i Servizi
+                        &larr; <?php _e('Torna a tutti i Servizi', 'raid-motor'); ?>
                     </a>
                 </div>
 
