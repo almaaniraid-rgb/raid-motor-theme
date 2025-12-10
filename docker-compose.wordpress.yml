@@ -1,6 +1,5 @@
 # Docker Compose per WordPress con tema RAID MOTOR
 # Avvia un ambiente WordPress locale completo con database e WP-CLI
-version: '3.8'
 
 services:
   # Database MySQL per WordPress
