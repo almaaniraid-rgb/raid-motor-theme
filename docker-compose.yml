@@ -2,8 +2,9 @@ version: '3.8'
 
 services:
   raid-motor:
-build: https://github.com/almaaniraid-rgb/raid-motor-theme.git#main    
-    container_name: raid-motor-app
+    build:
+      context: .
+      dockerfile: Dockerfile    container_name: raid-motor-app
     
     ports:
       - "8080:80"
