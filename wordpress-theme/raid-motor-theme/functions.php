@@ -11,7 +11,14 @@ function raid_motor_setup() {
     add_theme_support('title-tag');
     add_theme_support('post-thumbnails');
     add_theme_support('html5', array('search-form', 'comment-form', 'comment-list', 'gallery', 'caption'));
-    add_theme_support('custom-logo');
+    
+    // Supporto per Custom Logo con dimensioni consigliate
+    add_theme_support('custom-logo', array(
+        'height'      => 120,
+        'width'       => 400,
+        'flex-height' => true,
+        'flex-width'  => true,
+    ));
 
     register_nav_menus(array(
         'primary' => __('Primary Menu', 'raid-motor'),
@@ -19,8 +26,59 @@ function raid_motor_setup() {
 }
 add_action('after_setup_theme', 'raid_motor_setup');
 
+/**
+ * Registra il Custom Post Type 'service' (Servizi)
+ */
+function raid_motor_register_service_post_type() {
+    $labels = array(
+        'name'                  => 'Servizi',
+        'singular_name'         => 'Servizio',
+        'menu_name'             => 'Servizi',
+        'name_admin_bar'        => 'Servizio',
+        'add_new'               => 'Aggiungi nuovo',
+        'add_new_item'          => 'Aggiungi nuovo servizio',
+        'new_item'              => 'Nuovo servizio',
+        'edit_item'             => 'Modifica servizio',
+        'view_item'             => 'Visualizza servizio',
+        'all_items'             => 'Tutti i servizi',
+        'search_items'          => 'Cerca servizi',
+        'parent_item_colon'     => 'Servizio padre:',
+        'not_found'             => 'Nessun servizio trovato.',
+        'not_found_in_trash'    => 'Nessun servizio trovato nel cestino.',
+        'archives'              => 'Archivio servizi',
+        'insert_into_item'      => 'Inserisci nel servizio',
+        'uploaded_to_this_item' => 'Caricato in questo servizio',
+        'filter_items_list'     => 'Filtra elenco servizi',
+        'items_list_navigation' => 'Navigazione elenco servizi',
+        'items_list'            => 'Elenco servizi',
+    );
+
+    $args = array(
+        'labels'             => $labels,
+        'public'             => true,
+        'publicly_queryable' => true,
+        'show_ui'            => true,
+        'show_in_menu'       => true,
+        'show_in_rest'       => true,
+        'query_var'          => true,
+        'rewrite'            => array('slug' => 'servizi'),
+        'capability_type'    => 'post',
+        'has_archive'        => true,
+        'hierarchical'       => false,
+        'menu_position'      => 5,
+        'menu_icon'          => 'dashicons-admin-tools',
+        'supports'           => array('title', 'editor', 'thumbnail', 'excerpt'),
+    );
+
+    register_post_type('service', $args);
+}
+add_action('init', 'raid_motor_register_service_post_type');
+
 function raid_motor_scripts() {
-    wp_enqueue_style('raid-motor-style', get_stylesheet_uri(), array(), '1.0.0');
+    // Usa filemtime per cache-busting
+    $theme_version = filemtime(get_template_directory() . '/style.css');
+    
+    wp_enqueue_style('raid-motor-style', get_stylesheet_uri(), array(), $theme_version);
     wp_enqueue_script('raid-motor-particles', get_template_directory_uri() . '/js/particles.js', array(), '1.0.0', true);
     wp_enqueue_script('raid-motor-main', get_template_directory_uri() . '/js/main.js', array('jquery'), '1.0.0', true);
 

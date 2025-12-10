@@ -12,15 +12,21 @@
 
 <header class="site-header">
     <div class="container">
-        <?php if (has_custom_logo()) : ?>
-            <div class="site-branding">
-                <?php the_custom_logo(); ?>
-            </div>
-        <?php else : ?>
-            <a href="<?php echo esc_url(home_url('/')); ?>" class="site-title">
-                <?php bloginfo('name'); ?>
-            </a>
-        <?php endif; ?>
+        <div class="site-branding">
+            <?php 
+            // Mostra il custom logo se impostato, altrimenti usa il logo di default
+            if (has_custom_logo()) {
+                the_custom_logo();
+            } else {
+                $logo_path = get_template_directory_uri() . '/assets/images/logo.png';
+                ?>
+                <a href="<?php echo esc_url(home_url('/')); ?>" class="site-logo" rel="home">
+                    <img src="<?php echo esc_url($logo_path); ?>" alt="<?php bloginfo('name'); ?>" class="custom-logo" />
+                </a>
+                <?php
+            }
+            ?>
+        </div>
 
         <nav class="main-navigation">
             <?php
