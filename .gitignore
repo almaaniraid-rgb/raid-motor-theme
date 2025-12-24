@@ -1,2 +1,25 @@
 node_modules/
 .env
+
+# Docker volumes e dati
+wordpress_data/
+db_data/
+
+# WordPress
+wordpress-theme/raid-motor-theme/wp-content/uploads/
+wordpress-theme/raid-motor-theme/wp-content/cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*.log
+/tmp/
